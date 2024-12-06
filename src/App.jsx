@@ -1,35 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
+import Card from "./Components/Card";
+import Scoreboard from "./Components/Scoreboard";
 
-function App() {
-  const [count, setCount] = useState(0)
+let isFetched = false;
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+async function getData() {
+    const data = await fetch(
+        "https://api.giphy.com/v1/gifs/search?q=tits&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG&limit=12",
+        { mode: "cors" }
+    );
+    const fetchedData = await data.json();
+    return fetchedData;
 }
 
-export default App
+function App() {
+    const [gifs, setGifs] = useState([]);
+    const [clickedId, setClickedId] = useState([]);
+    const [score, setScore] = useState(0);
+    const [bestScore, setBestScore] = useState(0);
+
+
+    function handleClick(selectedId) {
+        const alreadySelected = clickedId.some((id) => selectedId === id);
+        if (!alreadySelected) {
+            setClickedId((prev) => [...prev, selectedId]);
+            setScore((prev) => {
+              const newScore = prev + 1;
+              if (newScore > bestScore) {
+                setBestScore(newScore);
+              }
+              return newScore;
+        });
+        } else {
+            setClickedId([]);
+            setScore(0);
+        }
+        console.log(score, bestScore);
+    }
+
+    useEffect(() => {
+        if (!isFetched) {
+            isFetched = true;
+            getData().then((response) => {
+                console.log(response);
+                const urls = [];
+                response.data.forEach((gif) => {
+                    urls.push({
+                        id: gif.id,
+                        title: gif.title,
+                        url: gif.images.fixed_width.url,
+                    });
+                });
+                setGifs(urls);
+            });
+        }
+    }, []);
+    return (
+        <>
+            <Scoreboard score={score} bestScore={bestScore} />
+            <div className="grid-container">
+                {gifs.map((element) => {
+                    return (
+                        <Card
+                            key={element.id}
+                            gif={element}
+                            onPlay={handleClick}
+                        />
+                    );
+                })}
+            </div>
+        </>
+    );
+}
+
+export default App;
+
+// api.giphy.com/v1/gifs/search&q=boobs&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG
