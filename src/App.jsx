@@ -7,7 +7,7 @@ let isFetched = false;
 
 async function getData() {
     const data = await fetch(
-        "https://api.giphy.com/v1/gifs/search?q=tits&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG&limit=10",
+        "https://pixabay.com/api/?key=47508495-5a51e18d60bb21275eb142c00&q=boobs+sexy&min_height=5000&per_page=15",
         { mode: "cors" }
     );
     const fetchedData = await data.json();
@@ -64,6 +64,12 @@ function App() {
     }
 
     function shuffleCards(selectedId) {
+        const cards = document.querySelectorAll(".card")
+        cards.forEach((card) => {
+            card.style.animation = "none"; 
+            void card.offsetWidth;
+            card.style.animation = ""; 
+        })
         const gifsArray = gifs.slice();
         const shuffled = shuffleAlgo(gifsArray);
         const newClickedIds = clickedId.slice();
@@ -94,11 +100,11 @@ function App() {
             getData().then((response) => {
                 console.log(response);
                 const urls = [];
-                response.data.forEach((gif) => {
+                response.hits.forEach((gif) => {
                     urls.push({
                         id: gif.id,
-                        title: gif.title,
-                        url: gif.images.fixed_width.url,
+                        title: gif.tags,
+                        url: gif.webformatURL
                     });
                 });
                 setGifs(urls);
@@ -132,4 +138,6 @@ function App() {
 
 export default App;
 
-// api.giphy.com/v1/gifs/search&q=boobs&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG
+// https://api.giphy.com/v1/gifs/search?q=tits&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG&limit=10
+
+// https://pixabay.com/api/?key=47508495-5a51e18d60bb21275eb142c00&q=boobs
