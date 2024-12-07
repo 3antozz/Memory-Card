@@ -30,11 +30,6 @@ function App() {
     }
 
     function handleClick(selectedId) {
-        const index = gifs.findIndex((element) => element.id === selectedId);
-        setGifs((prev) => {
-            prev[index] = { ...prev[index], isClicked: true };
-            return prev;
-        });
         const alreadySelected = clickedId.some((id) => selectedId === id);
         const shuffle = shuffleCards(selectedId);
         if (shuffle === true) {
@@ -92,8 +87,6 @@ function App() {
             }
             const check = displayed.every((id) => newClickedIds.includes(id));
             if (check) {
-                console.log('check');
-                console.log(unclickedCard);
                 const randomIndex = Math.floor(Math.random() * 9);
                 displayed[randomIndex] = unclickedCard.id;
             }
@@ -109,7 +102,6 @@ function App() {
         if (!isFetched) {
             isFetched = true;
             getData().then((response) => {
-                console.log(response);
                 const urls = [];
                 response.hits.forEach((gif) => {
                     urls.push({
@@ -155,6 +147,3 @@ function App() {
 
 export default App;
 
-// https://api.giphy.com/v1/gifs/search?q=tits&api_key=ye59SPZvMwW370lhurUWyHjgptH7sAjG&limit=10
-
-// https://pixabay.com/api/?key=47508495-5a51e18d60bb21275eb142c00&q=boobs

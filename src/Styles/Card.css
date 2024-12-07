@@ -9,15 +9,15 @@
 }
 
 .card img {
-  border-radius: 15px;
-  margin: auto;
-  height: 100%;
-  object-fit: cover;
+    border-radius: 15px;
+    margin: auto;
+    height: 100%;
+    object-fit: cover;
 }
 
 .card:hover {
-  box-shadow: 0 0 9px 2px white;
-  transform: scale(1.05);
+    box-shadow: 0 0 9px 2px yellow;
+    transform: scale(1.05);
 }
 
 .clicked {
@@ -25,12 +25,15 @@
 }
 
 @media (max-width: 699px) {
-  .card {
-    width: 45%;
-    min-width: 150px;
+    .card {
+        width: 45%;
+        min-width: 150px;
+    }
+    .card:hover {
+        box-shadow: none;
+        transform: none;
+      }
 }
-}
-
 
 @keyframes shuffleAnim {
     0% {
