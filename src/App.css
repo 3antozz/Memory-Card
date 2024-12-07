@@ -1,6 +1,80 @@
+body {
+    background-color: rgb(78, 71, 71);
+    color: white;
+}
+
 .grid-container {
-    padding: 5rem 10vw;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    padding: 2rem 5vw;
+    display: flex;
+    flex-wrap: wrap;
     gap: 2rem;
+    justify-content: center;
+}
+
+@media (max-width: 699px) {
+    .grid-container {
+        padding: 22dvh 2vw;
+        gap: 1rem;
+    }
+
+    dialog div {
+        padding: 2.5rem 4rem;
+    }
+}
+
+dialog[open] {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100dvh;
+    z-index: 10;
+    margin: 0;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+dialog div {
+    border-radius: 10px;
+    background-color: beige;
+    padding: 2.5rem 4rem;
+    z-index: 99;
+    animation: fadeIn 200ms ease-out;
+}
+
+dialog button {
+    padding: 0.2rem 20%;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    font-weight: bold;
+    background-color: rgb(178, 232, 178);
+    transition: transform 150ms ease-in-out;
+}
+
+dialog button:hover {
+    transform: scale(1.2);
+}
+
+dialog h1 {
+    color: black;
 }

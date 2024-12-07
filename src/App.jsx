@@ -20,6 +20,14 @@ function App() {
     const [displayedId, setDisplayedId] = useState([]);
     const [score, setScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
+    const [isGameOver, setGameOver] = useState(false);
+    const [result, setResult] = useState(false);
+
+    function restartGame () {
+        setGameOver(false);
+        setClickedId([]);
+        setScore(0);
+    }
 
     function handleClick(selectedId) {
         const index = gifs.findIndex((element) => element.id === selectedId);
@@ -33,7 +41,7 @@ function App() {
             setClickedId([]);
             setScore((prev) => {
                 setBestScore(prev+1);
-                return 0;
+                return prev;
             });
             return;
         }
@@ -48,8 +56,8 @@ function App() {
                 return newScore;
             });
         } else {
-            setClickedId([]);
-            setScore(0);
+            setGameOver(true);
+            setResult(false);
         }
     }
 
@@ -84,12 +92,15 @@ function App() {
             }
             const check = displayed.every((id) => newClickedIds.includes(id));
             if (check) {
-                console.log("Checked!");
+                console.log('check');
+                console.log(unclickedCard);
                 const randomIndex = Math.floor(Math.random() * 9);
                 displayed[randomIndex] = unclickedCard.id;
             }
             return displayed;
         } else {
+            setGameOver(true);
+            setResult(true);
             return true;
         }
     }
@@ -118,6 +129,12 @@ function App() {
     }, []);
     return (
         <>
+            <dialog open={isGameOver}>
+                <div style={{borderLeft: `20px solid ${result ? 'green' : 'red'}`}}>
+                    <h1 style={{color: `${result ? 'green' : 'red'}`}}>You have {result ? 'Won' : 'Lost'}</h1>
+                    <button onClick={restartGame}>Restart</button>
+                </div>
+            </dialog>
             <Scoreboard score={score} bestScore={bestScore} />
             <div className="grid-container">
                 {gifs

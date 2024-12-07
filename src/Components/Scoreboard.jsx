@@ -3,8 +3,8 @@ import "../Styles/Scoreboard.css";
 export default function Scoreboard({score, bestScore}) {
     return (
         <div className="scoreboard">
-            <h3>Score: {score}</h3>
-            <h3>Best Score: {bestScore}</h3>
+            <h1>Score: {score}</h1>
+            <h2>Best Score: {bestScore}</h2>
         </div>
     );
 }
