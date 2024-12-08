@@ -36,7 +36,7 @@ function App() {
             setClickedId([]);
             setScore((prev) => {
                 setBestScore(prev+1);
-                return prev;
+                return prev+1;
             });
             return;
         }
